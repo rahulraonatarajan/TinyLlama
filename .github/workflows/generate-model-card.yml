@@ -1,0 +1,20 @@
+
+name: Generate TinyLlama Model Card
+on:
+  push:
+    paths:
+      - 'checkpoints/**'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/model-card-generator
+        with:
+          model_path: 'checkpoints/TinyLlama-1.1B'
+          output: 'MODEL_CARD.md'
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'docs: update MODEL_CARD.md'
+          file_pattern: 'MODEL_CARD.md'
