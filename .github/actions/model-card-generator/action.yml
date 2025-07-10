@@ -1,0 +1,25 @@
+
+name: Model Card Generator
+description: Auto-generate MODEL_CARD.md for TinyLlama checkpoints.
+
+inputs:
+  model_path:
+    description: Path to model dir
+    required: true
+    default: checkpoints/TinyLlama-1.1B
+  output:
+    description: Output markdown file
+    required: false
+    default: MODEL_CARD.md
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install deps
+      run: pip install --quiet transformers
+    - shell: bash
+      run: |
+        python "$GITHUB_ACTION_PATH/model_card_generator.py" --model_path "${{ inputs.model_path }}" --output "${{ inputs.output }}"
